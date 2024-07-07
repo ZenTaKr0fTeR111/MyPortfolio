@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.myportfolio.ui.home_screen.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/assetListFragment"
+        android:name="com.example.myportfolio.ui.assets_screen.AssetListFragment"
+        android:label="fragment_asset_list"
+        tools:layout="@layout/fragment_asset_list" />
+    <fragment
+        android:id="@+id/portfolioFragment"
+        android:name="com.example.myportfolio.ui.portfolio_screen.PortfolioFragment"
+        android:label="fragment_portfolio"
+        tools:layout="@layout/fragment_portfolio" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.myportfolio.ui.settings_screen.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>
