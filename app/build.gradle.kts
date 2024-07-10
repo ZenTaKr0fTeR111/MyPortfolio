@@ -1,3 +1,7 @@
+apply(from = "../code_quality/detekt.gradle")
+apply(from = "../code_style/ktlint.gradle")
+apply(from = "../scripts/git_hook.gradle")
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
