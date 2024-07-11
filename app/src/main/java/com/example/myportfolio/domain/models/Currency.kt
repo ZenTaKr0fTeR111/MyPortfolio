@@ -5,4 +5,4 @@ data class Currency(
     val name: String,
     val secondName: String,
     val symbol: String,
-     ) : Asset
+) : Asset

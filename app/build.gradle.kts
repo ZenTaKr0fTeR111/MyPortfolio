@@ -1,10 +1,9 @@
-apply(from="../code_quality/detekt.gradle")
-apply(from="../code_style/ktlint.gradle")
+apply(from = "../code_quality/detekt.gradle")
+apply(from = "../code_style/ktlint.gradle")
 
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-
 }
 
 android {
@@ -25,8 +24,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -37,7 +35,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures{
+    buildFeatures {
         viewBinding = true
     }
 }
@@ -53,10 +51,8 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    //implementation("com.squareup.okhttp3:logging-interceptor:4.5.0")
-    //implementation("org.jetbrains.kotlinx:")
-
+    // implementation("com.squareup.okhttp3:logging-interceptor:4.5.0")
+    // implementation("org.jetbrains.kotlinx:")
 }
