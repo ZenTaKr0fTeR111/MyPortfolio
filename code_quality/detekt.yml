@@ -242,9 +242,11 @@ formatting:
     autoCorrect: false
     indentSize: 4
     continuationIndentSize: 16
+    excludes: ['**/build/**']
   MaximumLineLength:
     active: true
     maxLineLength: 100
+    excludes: ['**/build/**']
   ModifierOrdering:
     active: true
     autoCorrect: false
@@ -293,9 +295,11 @@ formatting:
     active: true
     autoCorrect: false
     indentSize: 4
+    excludes: ['**/build/**']
   SpacingAroundColon:
     active: true
     autoCorrect: false
+    excludes: ['**/build/**']
   SpacingAroundComma:
     active: true
     autoCorrect: false
@@ -537,6 +541,7 @@ style:
     excludePackageStatements: true
     excludeImportStatements: true
     excludeCommentStatements: false
+    excludes: ['**/build/**']
   MayBeConst:
     active: true
   ModifierOrder:
@@ -585,6 +590,7 @@ style:
   UnnecessaryAbstractClass:
     active: true
     ignoreAnnotated: ['dagger.Module']
+    excludes: ['**src/**']
   UnnecessaryAnnotationUseSiteTarget:
     active: false
   UnnecessaryApply:
