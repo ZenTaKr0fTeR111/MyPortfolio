@@ -8,3 +8,9 @@
 .externalNativeBuild
 .cxx
 local.properties
+/code_quality/detekt.gradle
+/code_quality/detekt.yml
+/scripts/git_hook.gradle
+/code_style/InnowiseGroup.xml
+/code_style/ktlint.gradle
+/scripts/pre-commit
