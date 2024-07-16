@@ -1,6 +1,6 @@
 package com.example.myportfolio.domain.models
 
-abstract class Asset(
+sealed class Asset(
     open val id: Int,
     open val name: String
 )
@@ -15,20 +15,20 @@ data class Currency(
 data class Stock(
     override val id: Int,
     override val name: String,
-    val price: Int,
+    val priceInSubunits: Int,
     val baseCurrency: Currency,
     val ticker: String
 ) : Asset(id, name) {
-    fun getPrice() = (price / 100.toDouble()).toString() + baseCurrency.symbol
+    fun getBasePrice() = priceInSubunits / 100.0
 }
 
 data class Bond(
     override val id: Int,
     override val name: String,
-    val par: Int,
+    val parInSubunits: Int,
     val baseCurrency: Currency,
     val code: String,
     val rate: Double
 ) : Asset(id, name) {
-    fun getPrice() = (par / 100.toDouble()).toString() + baseCurrency.symbol
+    fun getBasePrice() = parInSubunits / 100.0
 }

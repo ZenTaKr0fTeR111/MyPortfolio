@@ -1,12 +1,12 @@
 package com.example.myportfolio.data.datasource
 
 import com.example.myportfolio.domain.models.Asset
-import javax.inject.Inject
+import com.example.myportfolio.domain.models.Currency
 
 interface AssetsDataSource {
     fun getAssets(): List<Asset>
-}
 
-class AssetsSampleSource @Inject constructor() : AssetsDataSource {
-    override fun getAssets() = assetsStorage
+    fun getAssetById(id: Int): Asset?
+
+    fun getBaseCurrency(): Currency
 }
