@@ -23,7 +23,11 @@
         android:id="@+id/portfolioFragment"
         android:name="com.example.myportfolio.ui.portfolio_screen.PortfolioFragment"
         android:label="fragment_portfolio"
-        tools:layout="@layout/fragment_portfolio" />
+        tools:layout="@layout/fragment_portfolio" >
+        <action
+            android:id="@+id/action_portfolioFragment_to_DetailedPortfolioFragment"
+            app:destination="@id/DetailedPortfolioFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.myportfolio.ui.settings_screen.SettingsFragment"
@@ -38,4 +42,9 @@
             android:name="assetId"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/DetailedPortfolioFragment"
+        android:name="com.example.myportfolio.ui.portfolio_screen.DetailedPortfolioFragment"
+        android:label="Existing Fragment"
+        tools:layout="@layout/fragment_detailed_portfolio" />
 </navigation>
