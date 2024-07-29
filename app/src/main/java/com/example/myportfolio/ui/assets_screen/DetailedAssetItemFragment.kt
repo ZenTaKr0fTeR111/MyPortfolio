@@ -24,7 +24,7 @@ class DetailedAssetItemFragment : Fragment() {
         val actionBar = activity.supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
+        activity.onBackPressedDispatcher.addCallback(this) {
             actionBar?.setDisplayHomeAsUpEnabled(false)
             Navigation.findNavController(requireView()).popBackStack()
         }
@@ -41,7 +41,7 @@ class DetailedAssetItemFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.assetDetails.text = "Asset #${args.assetId}"
+        binding.assetDetails.text = args.assetId.toString()
     }
 
     override fun onDestroyView() {

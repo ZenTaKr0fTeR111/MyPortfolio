@@ -43,7 +43,7 @@ class AssetListFragment : Fragment() {
             DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         )
         viewModel.assets.observe(viewLifecycleOwner) {
-            adapter.submitItems(it)
+            adapter.submitList(it)
         }
     }
 

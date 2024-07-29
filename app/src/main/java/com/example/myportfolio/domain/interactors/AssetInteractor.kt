@@ -6,6 +6,7 @@ import javax.inject.Inject
 class AssetInteractor @Inject constructor(
     private val repository: AssetRepository
 ) {
+    fun invokeFetchingAssets() = repository.getAssets()
 
-    fun getAssets() = repository.getAssets()
+    fun invokeFetchingBaseCurrency() = repository.getBaseCurrency()
 }

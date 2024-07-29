@@ -520,7 +520,7 @@ style:
     maxJumpCount: 1
   MagicNumber:
     active: true
-    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**', '**/*.Test.kt', '**/*.Spec.kt', '**/*.Spek.kt', '**/build.gradle.kts']
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**', '**/*.Test.kt', '**/*.Spec.kt', '**/*.Spek.kt', '**/build.gradle.kts', "**/Asset.kt"]
     ignoreNumbers: ['-1', '0', '1', '2']
     ignoreHashCodeFunction: true
     ignorePropertyDeclaration: true
