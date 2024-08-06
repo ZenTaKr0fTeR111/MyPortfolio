@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.myportfolio"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -66,4 +66,6 @@ dependencies {
     kapt(libs.hilt.android.compiler)
 
     implementation(libs.androidx.datastore.preferences)
+
+    implementation(libs.mpandroidchart)
 }

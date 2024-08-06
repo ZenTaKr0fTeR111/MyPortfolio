@@ -6,13 +6,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.myportfolio.databinding.AssetBondItemBinding
 import com.example.myportfolio.databinding.AssetListItemBinding
+import com.example.myportfolio.domain.models.Asset
 import com.example.myportfolio.ui.models.UIAsset
 import com.example.myportfolio.ui.models.UIBond
 import com.example.myportfolio.ui.models.UICurrency
 import com.example.myportfolio.ui.models.UIStock
 
 class AssetsAdapter(
-    private val onItemClicked: (Int) -> Unit
+    private val onItemClicked: (Asset) -> Unit
 ) : ListAdapter<UIAsset, AssetViewHolder<*>>(AssetsDiffCallback) {
 
     enum class AssetType {

@@ -1,5 +1,7 @@
 package com.example.myportfolio.domain.models
 
+import java.time.LocalDate
+
 sealed class Asset(
     open val id: Int,
     open val name: String
@@ -9,7 +11,8 @@ data class Currency(
     override val id: Int,
     override val name: String,
     val code: CurrencyCode,
-    val symbol: String
+    val symbol: String,
+    val subunitShare: Int
 ) : Asset(id, name)
 
 data class Stock(
@@ -19,7 +22,7 @@ data class Stock(
     val baseCurrency: Currency,
     val ticker: String
 ) : Asset(id, name) {
-    fun getBasePrice() = priceInSubunits / 100.0
+    fun getBasePrice() = priceInSubunits / baseCurrency.subunitShare.toDouble()
 }
 
 data class Bond(
@@ -28,7 +31,9 @@ data class Bond(
     val parInSubunits: Int,
     val baseCurrency: Currency,
     val code: String,
-    val rate: Double
+    val rate: Double,
+    val dateOfIssuance: LocalDate,
+    val yearsTillMaturity: Long
 ) : Asset(id, name) {
-    fun getBasePrice() = parInSubunits / 100.0
+    fun getBasePrice() = parInSubunits / baseCurrency.subunitShare.toDouble()
 }

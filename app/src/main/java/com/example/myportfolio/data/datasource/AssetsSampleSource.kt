@@ -5,6 +5,7 @@ import com.example.myportfolio.domain.models.Bond
 import com.example.myportfolio.domain.models.CurrencyCode
 import com.example.myportfolio.domain.models.Stock
 import com.example.myportfolio.domain.models.currencies
+import java.time.LocalDate
 import javax.inject.Inject
 
 class AssetsSampleSource @Inject constructor() : AssetsDataSource {
@@ -50,7 +51,9 @@ class AssetsSampleSource @Inject constructor() : AssetsDataSource {
             100000,
             currencies.getValue(CurrencyCode.USD),
             "US10Y",
-            1.59
+            1.59,
+            LocalDate.of(2020, 12, 1),
+            10
         )
     ) + currencies.values
 }

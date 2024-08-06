@@ -4,12 +4,35 @@
     <string name="text_asset_list">Assets</string>
     <string name="text_portfolio_list">Portfolio</string>
     <string name="cancel">Cancel</string>
+    <string name="info">Info</string>
+    <string name="conversion_rate">Conversion Rate</string>
+    <string name="issued_on">Issued On:</string>
 
     <string name="rate" translatable="false">%1$.2f%%</string>
     <string name="price" translatable="false">%1$.2f%2$s</string>
 
+    <string name="value">Value: %1$.2f%2$s</string>
+    <string name="interest_rate">Interest Rate: %1$.2f%%</string>
+
+    // Settings
     <string name="text_settings">Settings</string>
     <string name="setting_currency_label">App Currency</string>
     <string name="setting_nightmode_label">Night Mode</string>
     <string name="currency_picker_title">Choose App Currency</string>
+
+    // Currencies
+    <string name="us_dollar_name">United States Dollar</string>
+    <string name="euro_name">Euro</string>
+    <string name="pound_sterling_name">British Pound Sterling</string>
+    <string name="swiss_franc_name">Swiss Franc</string>
+    <string name="belarus_ruble_name">Belarusian Ruble</string>
+    <string name="maturity_date">Maturity Date:</string>
+
+    <string-array name="currency_codes">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>GBP</item>
+        <item>CHF</item>
+        <item>BYN</item>
+    </string-array>
 </resources>

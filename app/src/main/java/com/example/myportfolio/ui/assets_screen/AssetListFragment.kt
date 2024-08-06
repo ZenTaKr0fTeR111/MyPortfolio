@@ -10,6 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.myportfolio.databinding.FragmentAssetListBinding
+import com.example.myportfolio.domain.models.Bond
+import com.example.myportfolio.domain.models.Currency
+import com.example.myportfolio.domain.models.Stock
 import com.example.myportfolio.ui.MainViewModel
 import com.example.myportfolio.ui.assets_screen.rv.AssetsAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,12 +37,21 @@ class AssetListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = AssetsAdapter { assetId ->
-            findNavController().navigate(
-                AssetListFragmentDirections.actionAssetListFragmentToDetailedAssetItemFragment(
-                    assetId
+        val adapter = AssetsAdapter { asset ->
+            when (asset) {
+                is Currency -> findNavController().navigate(
+                    AssetListFragmentDirections
+                        .actionAssetListFragmentToDetailedCurrencyItemFragment(asset.id)
                 )
-            )
+                is Stock -> findNavController().navigate(
+                    AssetListFragmentDirections
+                        .actionAssetListFragmentToDetailedStockItemFragment(asset.id)
+                )
+                is Bond -> findNavController().navigate(
+                    AssetListFragmentDirections
+                        .actionAssetListFragmentToDetailedBondItemFragment(asset.id)
+                )
+            }
         }
         binding.assetList.adapter = adapter
         binding.assetList.addItemDecoration(
