@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.myportfolio.databinding.FragmentAssetListBinding
+import com.example.myportfolio.ui.MainViewModel
 import com.example.myportfolio.ui.assets_screen.rv.AssetsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,6 +20,7 @@ class AssetListFragment : Fragment() {
     val binding
         get() = _binding!!
     private val viewModel: AssetListViewModel by viewModels()
+    private val activityViewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,6 +45,8 @@ class AssetListFragment : Fragment() {
         binding.assetList.addItemDecoration(
             DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         )
+
+        viewModel.initAssets(activityViewModel.defaultCurrency)
         viewModel.assets.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }

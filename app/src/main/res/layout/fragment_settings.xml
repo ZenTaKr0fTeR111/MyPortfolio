@@ -1,14 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.settings_screen.SettingsFragment">
 
-    <TextView
+    <include layout="@layout/settings_divider"/>
+
+    <LinearLayout
+        android:id="@+id/settings_currency"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="30sp"
-        android:text="Settings Fragment" />
-</FrameLayout>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/settings_padding">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/setting_currency_label"
+            android:textColor="@color/settings_text"
+            android:textSize="@dimen/settings_text_size" />
+
+        <TextView
+            android:id="@+id/settings_currency_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/settings_subtext"
+            android:textSize="@dimen/settings_text_size"
+            tools:text="USD" />
+    </LinearLayout>
+
+    <include layout="@layout/settings_divider"/>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/settings_night_mode_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/settings_padding"
+        android:text="@string/setting_nightmode_label"
+        android:textColor="@color/settings_text"
+        android:textSize="@dimen/settings_text_size" />
+
+    <include layout="@layout/settings_divider"/>
+</LinearLayout>

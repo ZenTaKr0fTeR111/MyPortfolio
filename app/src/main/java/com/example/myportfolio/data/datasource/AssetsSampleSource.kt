@@ -2,9 +2,9 @@ package com.example.myportfolio.data.datasource
 
 import com.example.myportfolio.domain.models.Asset
 import com.example.myportfolio.domain.models.Bond
-import com.example.myportfolio.domain.models.Currency
 import com.example.myportfolio.domain.models.CurrencyCode
 import com.example.myportfolio.domain.models.Stock
+import com.example.myportfolio.domain.models.currencies
 import javax.inject.Inject
 
 class AssetsSampleSource @Inject constructor() : AssetsDataSource {
@@ -15,14 +15,6 @@ class AssetsSampleSource @Inject constructor() : AssetsDataSource {
     }
 
     override fun getBaseCurrency() = currencies.getValue(CurrencyCode.USD)
-
-    val currencies = mutableListOf(
-        Currency(100, "United States Dollar", CurrencyCode.USD, "$"),
-        Currency(101, "Euro", CurrencyCode.EUR, "€"),
-        Currency(102, "British Pound Sterling", CurrencyCode.GBP, "£"),
-        Currency(103, "Swiss Franc", CurrencyCode.CHF, "₣"),
-        Currency(104, "Belarusian Ruble", CurrencyCode.BYN, "Br")
-    ).associateBy { it.code }
 
     val assetsStorage = mutableListOf(
         Stock(
