@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.activity.addCallback
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import com.example.myportfolio.DateTimeUtils
 import com.example.myportfolio.databinding.FragmentDetailedCurrencyItemBinding
 import com.example.myportfolio.domain.models.Currency
 import com.example.myportfolio.domain.models.CurrencyCode
@@ -26,16 +28,16 @@ class DetailedCurrencyItemFragment : Fragment() {
         get() = _binding!!
     private val args: DetailedCurrencyItemFragmentArgs by navArgs()
     private val viewModel: DetailedAssetViewModel by viewModels()
+    private var actionBar: ActionBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val activity = requireActivity() as AppCompatActivity
-        val actionBar = activity.supportActionBar
+        actionBar = activity.supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
         activity.onBackPressedDispatcher.addCallback(this) {
-            actionBar?.setDisplayHomeAsUpEnabled(false)
             Navigation.findNavController(requireView()).popBackStack()
         }
     }
@@ -52,9 +54,23 @@ class DetailedCurrencyItemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.apply {
+            sourceCurrencyPicker.isEnabled = false
+
+            conversionRateChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+            conversionRateChart.legend.isEnabled = false
+        }
         viewModel.fetchAsset(args.assetId)
         viewModel.asset.observe(viewLifecycleOwner) { newCurrency ->
             setupInfo(newCurrency as Currency)
+        }
+        viewModel.conversionRates.observe(viewLifecycleOwner) { newConversionRates ->
+            binding.conversionRateChart.apply {
+                invalidate()
+                data = LineData(LineDataSet(newConversionRates, "Currency Rates"))
+                xAxis.valueFormatter = DateTimeUtils
+                notifyDataSetChanged()
+            }
         }
     }
 
@@ -63,28 +79,7 @@ class DetailedCurrencyItemFragment : Fragment() {
             nameText.text = currency.name
             codeNameText.text = currency.code.toString()
 
-            setupCurrencyPicker(currency)
-
-            conversionRateChart.apply {
-                xAxis.position = XAxis.XAxisPosition.BOTTOM
-                legend.isEnabled = false
-            }
-            viewModel.conversionRates.observe(viewLifecycleOwner) { newConversionRates ->
-                conversionRateChart.apply {
-                    invalidate()
-                    data = LineData(LineDataSet(newConversionRates, "Currency Rates"))
-                    xAxis.valueFormatter = DateFormatter
-                    notifyDataSetChanged()
-                }
-            }
-        }
-    }
-
-    private fun setupCurrencyPicker(currency: Currency) {
-        binding.apply {
             sourceCurrencyPicker.setSelection(CurrencyCode.entries.indexOf(currency.code))
-            sourceCurrencyPicker.isEnabled = false
-
             targetCurrencyPicker.onItemSelectedListener =
                 object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(
@@ -106,6 +101,7 @@ class DetailedCurrencyItemFragment : Fragment() {
 
     override fun onDestroyView() {
         _binding = null
+        actionBar?.setDisplayHomeAsUpEnabled(false)
         super.onDestroyView()
     }
 }

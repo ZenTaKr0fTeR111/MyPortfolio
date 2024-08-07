@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,16 +23,16 @@ class DetailedStockItemFragment : Fragment() {
         get() = _binding!!
     private val args: DetailedStockItemFragmentArgs by navArgs()
     private val viewModel: DetailedAssetViewModel by viewModels()
+    private var actionBar: ActionBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val activity = requireActivity() as AppCompatActivity
-        val actionBar = activity.supportActionBar
+        actionBar = activity.supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
         activity.onBackPressedDispatcher.addCallback(this) {
-            actionBar?.setDisplayHomeAsUpEnabled(false)
             Navigation.findNavController(requireView()).popBackStack()
         }
     }
@@ -65,6 +66,7 @@ class DetailedStockItemFragment : Fragment() {
 
     override fun onDestroyView() {
         _binding = null
+        actionBar?.setDisplayHomeAsUpEnabled(false)
         super.onDestroyView()
     }
 }

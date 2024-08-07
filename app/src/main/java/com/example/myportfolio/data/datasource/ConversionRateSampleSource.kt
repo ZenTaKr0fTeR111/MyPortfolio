@@ -1,26 +1,48 @@
 package com.example.myportfolio.data.datasource
 
+import com.example.myportfolio.domain.interactors.ConversionInteractor.Period
 import com.example.myportfolio.domain.models.ConversionRate
 import com.example.myportfolio.domain.models.CurrencyCode
 import java.time.LocalDate
 import javax.inject.Inject
 
 class ConversionRateSampleSource @Inject constructor() : ConversionRateDataSource {
-
-    override fun getRatesUSD(): List<ConversionRate> {
-        return conversionRatesUSD
+    companion object {
+        private const val WEEK = 7
+        private const val MONTH = 30
+        private const val YEAR = 365
     }
 
-    override fun getRatesEUR(): List<ConversionRate> {
-        return conversionRatesEUR
+    override fun getRates(
+        from: CurrencyCode,
+        to: CurrencyCode,
+        period: Period
+    ): List<ConversionRate> {
+        val days = when (period) {
+            Period.WEEK -> WEEK
+            Period.MONTH -> MONTH
+            Period.YEAR -> YEAR
+        }
+        return getRatesByCode(from, days).zip(getRatesByCode(to, days)) { source, target ->
+            ConversionRate(
+                source.sourceCurrency,
+                target.sourceCurrency,
+                source.rate / target.rate,
+                source.date
+            )
+        }
     }
 
-    override fun getRatesGBP(): List<ConversionRate> {
-        return conversionRatesGBP
-    }
-
-    override fun getRatesCHF(): List<ConversionRate> {
-        return conversionRatesCHF
+    private fun getRatesByCode(code: CurrencyCode, days: Int): List<ConversionRate> {
+        return when (code) {
+            CurrencyCode.USD -> conversionRatesUSD.take(days)
+            CurrencyCode.EUR -> conversionRatesEUR.take(days)
+            CurrencyCode.GBP -> conversionRatesGBP.take(days)
+            CurrencyCode.CHF -> conversionRatesCHF.take(days)
+            CurrencyCode.BYN -> conversionRatesCHF.take(days).map {
+                it.copy(sourceCurrency = CurrencyCode.BYN, rate = 1.00)
+            }
+        }
     }
 
     private val conversionRatesUSD = listOf(
@@ -73,7 +95,7 @@ class ConversionRateSampleSource @Inject constructor() : ConversionRateDataSourc
             CurrencyCode.EUR,
             CurrencyCode.BYN,
             3.3740,
-            LocalDate.of(2024, 8, 6)
+            LocalDate.of(2024, 8, 7)
         ),
         ConversionRate(
             CurrencyCode.EUR,

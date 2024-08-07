@@ -6,23 +6,27 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myportfolio.domain.interactors.AssetInteractor
 import com.example.myportfolio.domain.interactors.ConversionInteractor
+import com.example.myportfolio.domain.interactors.ConversionInteractor.Period
 import com.example.myportfolio.domain.models.Asset
+import com.example.myportfolio.domain.models.ConversionRate
 import com.example.myportfolio.domain.models.CurrencyCode
 import com.github.mikephil.charting.data.Entry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @HiltViewModel
 class DetailedAssetViewModel @Inject constructor(
     private val interactor: AssetInteractor,
     private val conversionInteractor: ConversionInteractor
 ) : ViewModel() {
-    private var _asset = MutableLiveData<Asset>()
+    private val _asset = MutableLiveData<Asset>()
     val asset: LiveData<Asset>
         get() = _asset
 
-    private var _conversionRates = MutableLiveData<List<Entry>>()
+    private val _conversionRates = MutableLiveData<List<Entry>>()
     val conversionRates: LiveData<List<Entry>>
         get() = _conversionRates
 
@@ -34,13 +38,23 @@ class DetailedAssetViewModel @Inject constructor(
 
     fun fetchConversionRates(sourceCurrency: CurrencyCode, targetCurrency: CurrencyCode) {
         viewModelScope.launch {
-            val rates = arrayListOf<Entry>()
-            for (
-                cRate in conversionInteractor.invokeFetchWeeklyRate(sourceCurrency, targetCurrency)
-            ) {
-                rates.add(Entry(cRate.date.toEpochDay().toFloat(), cRate.rate.toFloat()))
+            _conversionRates.value = ConversionRateMapper().mapConversionRatesToEntries(
+                conversionInteractor.invokeFetchConversionRates(
+                    sourceCurrency,
+                    targetCurrency,
+                    Period.WEEK
+                )
+            )
+        }
+    }
+
+    class ConversionRateMapper {
+        suspend fun mapConversionRatesToEntries(rates: List<ConversionRate>): List<Entry> {
+            return withContext(Dispatchers.Default) {
+                rates.map { conversionRate ->
+                    Entry(conversionRate.date.toEpochDay().toFloat(), conversionRate.rate.toFloat())
+                }.sortedBy { it.x }
             }
-            _conversionRates.value = rates.sortedBy { it.x }
         }
     }
 }

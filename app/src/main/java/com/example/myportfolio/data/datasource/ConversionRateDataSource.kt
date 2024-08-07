@@ -1,13 +1,9 @@
 package com.example.myportfolio.data.datasource
 
+import com.example.myportfolio.domain.interactors.ConversionInteractor.Period
 import com.example.myportfolio.domain.models.ConversionRate
+import com.example.myportfolio.domain.models.CurrencyCode
 
 interface ConversionRateDataSource {
-    fun getRatesUSD(): List<ConversionRate>
-
-    fun getRatesEUR(): List<ConversionRate>
-
-    fun getRatesGBP(): List<ConversionRate>
-
-    fun getRatesCHF(): List<ConversionRate>
+    fun getRates(from: CurrencyCode, to: CurrencyCode, period: Period): List<ConversionRate>
 }

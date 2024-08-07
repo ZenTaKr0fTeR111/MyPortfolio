@@ -5,16 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import com.example.myportfolio.DateTimeUtils
 import com.example.myportfolio.R
 import com.example.myportfolio.databinding.FragmentDetailedBondItemBinding
 import com.example.myportfolio.domain.models.Bond
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class DetailedBondItemFragment : Fragment() {
@@ -23,16 +24,16 @@ class DetailedBondItemFragment : Fragment() {
         get() = _binding!!
     private val args: DetailedBondItemFragmentArgs by navArgs()
     private val viewModel: DetailedAssetViewModel by viewModels()
+    private var actionBar: ActionBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val activity = requireActivity() as AppCompatActivity
-        val actionBar = activity.supportActionBar
+        actionBar = activity.supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
         activity.onBackPressedDispatcher.addCallback(this) {
-            actionBar?.setDisplayHomeAsUpEnabled(false)
             Navigation.findNavController(requireView()).popBackStack()
         }
     }
@@ -61,15 +62,16 @@ class DetailedBondItemFragment : Fragment() {
             codeNameText.text = bond.code
             parText.text = getString(R.string.value, bond.getBasePrice(), bond.baseCurrency.symbol)
             rateText.text = getString(R.string.interest_rate, bond.rate)
-            issueDateValue.text = bond.dateOfIssuance
-                .format(DateTimeFormatter.ofPattern("MMMM d, yyyy"))
-            maturityDateValue.text = bond.dateOfIssuance.plusYears(bond.yearsTillMaturity)
-                .format(DateTimeFormatter.ofPattern("MMMM d, yyyy"))
+            issueDateValue.text = DateTimeUtils
+                .formatBondDetails(bond.dateOfIssuance)
+            maturityDateValue.text = DateTimeUtils
+                .formatBondDetails(bond.dateOfIssuance.plusYears(bond.yearsTillMaturity))
         }
     }
 
     override fun onDestroyView() {
         _binding = null
+        actionBar?.setDisplayHomeAsUpEnabled(false)
         super.onDestroyView()
     }
 }
