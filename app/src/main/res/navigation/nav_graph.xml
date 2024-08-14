@@ -16,8 +16,14 @@
         android:label="fragment_asset_list"
         tools:layout="@layout/fragment_asset_list" >
         <action
-            android:id="@+id/action_assetListFragment_to_detailedAssetItemFragment"
-            app:destination="@id/detailedAssetItemFragment" />
+            android:id="@+id/action_assetListFragment_to_detailedCurrencyItemFragment"
+            app:destination="@id/detailedCurrencyItemFragment" />
+        <action
+            android:id="@+id/action_assetListFragment_to_detailedStockItemFragment"
+            app:destination="@id/detailedStockItemFragment" />
+        <action
+            android:id="@+id/action_assetListFragment_to_detailedBondItemFragment"
+            app:destination="@id/detailedBondItemFragment" />
     </fragment>
     <fragment
         android:id="@+id/portfolioFragment"
@@ -30,10 +36,26 @@
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
-        android:id="@+id/detailedAssetItemFragment"
-        android:name="com.example.myportfolio.ui.assets_screen.DetailedAssetItemFragment"
+        android:id="@+id/detailedCurrencyItemFragment"
+        android:name="com.example.myportfolio.ui.assets_screen.detailed_screen.DetailedCurrencyItemFragment"
         android:label="fragment_detailed_asset_item"
-        tools:layout="@layout/fragment_detailed_asset_item" >
+        tools:layout="@layout/fragment_detailed_currency_item" >
+        <argument
+            android:name="assetId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailedStockItemFragment"
+        android:name="com.example.myportfolio.ui.assets_screen.detailed_screen.DetailedStockItemFragment"
+        android:label="DetailedStockItemFragment">
+        <argument
+            android:name="assetId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailedBondItemFragment"
+        android:name="com.example.myportfolio.ui.assets_screen.detailed_screen.DetailedBondItemFragment"
+        android:label="DetailedBondItemFragment">
         <argument
             android:name="assetId"
             app:argType="integer" />

@@ -1,10 +1,10 @@
 package com.example.myportfolio.domain.models
 
-import java.util.Date
+import java.time.LocalDate
 
 data class ConversionRate(
-    val sourceCurrency: Currency,
-    val targetCurrency: Currency,
+    val sourceCurrency: CurrencyCode,
+    val targetCurrency: CurrencyCode,
     val rate: Double,
-    val date: Date
+    val date: LocalDate
 )

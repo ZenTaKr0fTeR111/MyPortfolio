@@ -13,9 +13,9 @@ enum class CurrencyCode {
 }
 
 val currencies = mutableListOf(
-    Currency(100, "United States Dollar", CurrencyCode.USD, "$"),
-    Currency(101, "Euro", CurrencyCode.EUR, "€"),
-    Currency(102, "British Pound Sterling", CurrencyCode.GBP, "£"),
-    Currency(103, "Swiss Franc", CurrencyCode.CHF, "₣"),
-    Currency(104, "Belarusian Ruble", CurrencyCode.BYN, "Br")
+    Currency(431, "United States Dollar", CurrencyCode.USD, "$", 100),
+    Currency(451, "Euro", CurrencyCode.EUR, "€", 100),
+    Currency(429, "British Pound Sterling", CurrencyCode.GBP, "£", 100),
+    Currency(426, "Swiss Franc", CurrencyCode.CHF, "₣", 100),
+    Currency(101, "Belarusian Ruble", CurrencyCode.BYN, "Br", 100)
 ).associateBy { it.code }

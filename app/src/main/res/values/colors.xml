@@ -4,6 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#808080</color>
 
-    <color name="settings_text">#FF000000</color>
-    <color name="settings_subtext">@android:color/darker_gray</color>
+    <color name="app_text">#FF000000</color>
+    <color name="app_subtext">@android:color/darker_gray</color>
 </resources>
