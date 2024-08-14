@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.assets_screen.detailed_screen.DetailedCurrencyItemFragment">
 
     <LinearLayout
@@ -58,6 +59,33 @@
                 android:layout_weight="1"
                 android:entries="@array/currency_codes"/>
         </LinearLayout>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/rates_period_chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/rates_week_period_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/week_period"/>
+            <com.google.android.material.chip.Chip
+                android:id="@+id/rates_month_period_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/month_period"/>
+            <com.google.android.material.chip.Chip
+                android:id="@+id/rates_year_period_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/year_period"/>
+        </com.google.android.material.chip.ChipGroup>
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/conversion_rate_chart"

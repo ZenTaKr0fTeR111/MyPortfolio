@@ -8,12 +8,14 @@ import androidx.activity.addCallback
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.example.myportfolio.R
 import com.example.myportfolio.databinding.FragmentDetailedStockItemBinding
-import com.example.myportfolio.domain.models.Stock
+import com.example.myportfolio.ui.MainViewModel
+import com.example.myportfolio.ui.models.UIStock
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,6 +25,7 @@ class DetailedStockItemFragment : Fragment() {
         get() = _binding!!
     private val args: DetailedStockItemFragmentArgs by navArgs()
     private val viewModel: DetailedAssetViewModel by viewModels()
+    private val activityViewModel: MainViewModel by activityViewModels()
     private var actionBar: ActionBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,18 +52,20 @@ class DetailedStockItemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.fetchAsset(args.assetId)
+        viewModel.fetchAsset(args.assetId, activityViewModel.defaultCurrency)
         viewModel.asset.observe(viewLifecycleOwner) { newStock ->
-            setupInfo(newStock as Stock)
+            setupInfo(newStock as UIStock)
         }
     }
 
-    private fun setupInfo(stock: Stock) {
+    private fun setupInfo(stock: UIStock) {
         binding.apply {
-            nameText.text = stock.name
-            codeNameText.text = stock.ticker
-            valueText.text =
-                getString(R.string.value, stock.getBasePrice(), stock.baseCurrency.symbol)
+            nameText.text = stock.domainAsset.name
+            codeNameText.text = stock.domainAsset.ticker
+            valueText.text = getString(
+                R.string.value,
+                stock.getPriceString(requireContext())
+            )
         }
     }
 

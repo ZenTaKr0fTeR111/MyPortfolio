@@ -20,14 +20,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/setting_currency_label"
-            android:textColor="@color/settings_text"
+            android:textColor="@color/app_text"
             android:textSize="@dimen/settings_text_size" />
 
         <TextView
             android:id="@+id/settings_currency_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/settings_subtext"
+            android:textColor="@color/app_subtext"
             android:textSize="@dimen/settings_text_size"
             tools:text="USD" />
     </LinearLayout>
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/settings_padding"
         android:text="@string/setting_nightmode_label"
-        android:textColor="@color/settings_text"
+        android:textColor="@color/app_text"
         android:textSize="@dimen/settings_text_size" />
 
     <include layout="@layout/settings_divider"/>

@@ -9,16 +9,21 @@ import androidx.activity.addCallback
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-import com.example.myportfolio.DateTimeUtils
+import com.example.myportfolio.ChartDateFormatter
+import com.example.myportfolio.R
+import com.example.myportfolio.configureChart
 import com.example.myportfolio.databinding.FragmentDetailedCurrencyItemBinding
-import com.example.myportfolio.domain.models.Currency
+import com.example.myportfolio.domain.interactors.ConversionInteractor.Period
 import com.example.myportfolio.domain.models.CurrencyCode
-import com.github.mikephil.charting.components.XAxis
+import com.example.myportfolio.ui.MainViewModel
+import com.example.myportfolio.ui.models.UICurrency
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,7 +33,31 @@ class DetailedCurrencyItemFragment : Fragment() {
         get() = _binding!!
     private val args: DetailedCurrencyItemFragmentArgs by navArgs()
     private val viewModel: DetailedAssetViewModel by viewModels()
+    private val activityViewModel: MainViewModel by activityViewModels()
     private var actionBar: ActionBar? = null
+
+    private val targetCurrencyPickerLister = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(
+            parent: AdapterView<*>?,
+            view: View?,
+            position: Int,
+            id: Long
+        ) {
+            viewModel.fetchConversionRates(
+                CurrencyCode.entries[position]
+            )
+        }
+
+        override fun onNothingSelected(parent: AdapterView<*>?) {}
+    }
+    private val periodPickerListener = { group: ChipGroup, _: List<Int> ->
+        val period = when (group.checkedChipId) {
+            R.id.rates_month_period_chip -> Period.MONTH
+            R.id.rates_year_period_chip -> Period.YEAR
+            else -> Period.WEEK
+        }
+        viewModel.changePeriod(period)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,45 +86,38 @@ class DetailedCurrencyItemFragment : Fragment() {
         binding.apply {
             sourceCurrencyPicker.isEnabled = false
 
-            conversionRateChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-            conversionRateChart.legend.isEnabled = false
+            conversionRateChart.configureChart(requireContext())
+
+            targetCurrencyPicker.onItemSelectedListener = targetCurrencyPickerLister
+            ratesPeriodChipGroup.setOnCheckedStateChangeListener(periodPickerListener)
         }
-        viewModel.fetchAsset(args.assetId)
+        viewModel.fetchAsset(args.assetId, activityViewModel.defaultCurrency)
         viewModel.asset.observe(viewLifecycleOwner) { newCurrency ->
-            setupInfo(newCurrency as Currency)
-        }
-        viewModel.conversionRates.observe(viewLifecycleOwner) { newConversionRates ->
-            binding.conversionRateChart.apply {
-                invalidate()
-                data = LineData(LineDataSet(newConversionRates, "Currency Rates"))
-                xAxis.valueFormatter = DateTimeUtils
-                notifyDataSetChanged()
-            }
+            setupInfo(newCurrency as UICurrency)
         }
     }
 
-    private fun setupInfo(currency: Currency) {
+    private fun setupInfo(currency: UICurrency) {
         binding.apply {
-            nameText.text = currency.name
-            codeNameText.text = currency.code.toString()
+            nameText.text = currency.domainAsset.name
+            codeNameText.text = currency.domainAsset.code.toString()
+            sourceCurrencyPicker
+                .setSelection(CurrencyCode.entries.indexOf(currency.domainAsset.code))
 
-            sourceCurrencyPicker.setSelection(CurrencyCode.entries.indexOf(currency.code))
-            targetCurrencyPicker.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        viewModel.fetchConversionRates(
-                            currency.code,
-                            CurrencyCode.entries[position]
-                        )
-                    }
+            val chipToCheck = when (viewModel.period) {
+                Period.MONTH -> ratesMonthPeriodChip
+                Period.YEAR -> ratesYearPeriodChip
+                else -> ratesWeekPeriodChip
+            }
+            chipToCheck.isChecked = true
 
-                    override fun onNothingSelected(parent: AdapterView<*>?) {}
-                }
+            conversionRateChart.apply {
+                invalidate()
+                data = LineData(LineDataSet(currency.conversionRates, "Currency Rates"))
+                data.setValueTextColor(requireContext().getColor(R.color.app_text))
+                xAxis.valueFormatter = ChartDateFormatter
+                notifyDataSetChanged()
+            }
         }
     }
 

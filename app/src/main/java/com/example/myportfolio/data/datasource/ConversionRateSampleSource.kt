@@ -7,22 +7,13 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 class ConversionRateSampleSource @Inject constructor() : ConversionRateDataSource {
-    companion object {
-        private const val WEEK = 7
-        private const val MONTH = 30
-        private const val YEAR = 365
-    }
 
     override fun getRates(
         from: CurrencyCode,
         to: CurrencyCode,
         period: Period
     ): List<ConversionRate> {
-        val days = when (period) {
-            Period.WEEK -> WEEK
-            Period.MONTH -> MONTH
-            Period.YEAR -> YEAR
-        }
+        val days = period.days
         return getRatesByCode(from, days).zip(getRatesByCode(to, days)) { source, target ->
             ConversionRate(
                 source.sourceCurrency,
@@ -46,6 +37,30 @@ class ConversionRateSampleSource @Inject constructor() : ConversionRateDataSourc
     }
 
     private val conversionRatesUSD = listOf(
+        ConversionRate(
+            CurrencyCode.USD,
+            CurrencyCode.BYN,
+            3.1073,
+            LocalDate.of(2024, 8, 11)
+        ),
+        ConversionRate(
+            CurrencyCode.USD,
+            CurrencyCode.BYN,
+            3.1073,
+            LocalDate.of(2024, 8, 10)
+        ),
+        ConversionRate(
+            CurrencyCode.USD,
+            CurrencyCode.BYN,
+            3.1073,
+            LocalDate.of(2024, 8, 9)
+        ),
+        ConversionRate(
+            CurrencyCode.USD,
+            CurrencyCode.BYN,
+            3.1007,
+            LocalDate.of(2024, 8, 8)
+        ),
         ConversionRate(
             CurrencyCode.USD,
             CurrencyCode.BYN,
@@ -94,6 +109,30 @@ class ConversionRateSampleSource @Inject constructor() : ConversionRateDataSourc
         ConversionRate(
             CurrencyCode.EUR,
             CurrencyCode.BYN,
+            3.3935,
+            LocalDate.of(2024, 8, 11)
+        ),
+        ConversionRate(
+            CurrencyCode.EUR,
+            CurrencyCode.BYN,
+            3.3935,
+            LocalDate.of(2024, 8, 10)
+        ),
+        ConversionRate(
+            CurrencyCode.EUR,
+            CurrencyCode.BYN,
+            3.3935,
+            LocalDate.of(2024, 8, 9)
+        ),
+        ConversionRate(
+            CurrencyCode.EUR,
+            CurrencyCode.BYN,
+            3.3832,
+            LocalDate.of(2024, 8, 8)
+        ),
+        ConversionRate(
+            CurrencyCode.EUR,
+            CurrencyCode.BYN,
             3.3740,
             LocalDate.of(2024, 8, 7)
         ),
@@ -139,6 +178,30 @@ class ConversionRateSampleSource @Inject constructor() : ConversionRateDataSourc
         ConversionRate(
             CurrencyCode.GBP,
             CurrencyCode.BYN,
+            3.9355,
+            LocalDate.of(2024, 8, 11)
+        ),
+        ConversionRate(
+            CurrencyCode.GBP,
+            CurrencyCode.BYN,
+            3.9355,
+            LocalDate.of(2024, 8, 10)
+        ),
+        ConversionRate(
+            CurrencyCode.GBP,
+            CurrencyCode.BYN,
+            3.9355,
+            LocalDate.of(2024, 8, 9)
+        ),
+        ConversionRate(
+            CurrencyCode.GBP,
+            CurrencyCode.BYN,
+            3.9391,
+            LocalDate.of(2024, 8, 8)
+        ),
+        ConversionRate(
+            CurrencyCode.GBP,
+            CurrencyCode.BYN,
             3.9300,
             LocalDate.of(2024, 8, 7)
         ),
@@ -181,6 +244,30 @@ class ConversionRateSampleSource @Inject constructor() : ConversionRateDataSourc
     )
 
     private val conversionRatesCHF = listOf(
+        ConversionRate(
+            CurrencyCode.CHF,
+            CurrencyCode.BYN,
+            3.6228,
+            LocalDate.of(2024, 8, 11)
+        ),
+        ConversionRate(
+            CurrencyCode.CHF,
+            CurrencyCode.BYN,
+            3.6228,
+            LocalDate.of(2024, 8, 10)
+        ),
+        ConversionRate(
+            CurrencyCode.CHF,
+            CurrencyCode.BYN,
+            3.6228,
+            LocalDate.of(2024, 8, 9)
+        ),
+        ConversionRate(
+            CurrencyCode.CHF,
+            CurrencyCode.BYN,
+            3.5923,
+            LocalDate.of(2024, 8, 8)
+        ),
         ConversionRate(
             CurrencyCode.CHF,
             CurrencyCode.BYN,

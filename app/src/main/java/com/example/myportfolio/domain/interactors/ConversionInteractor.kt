@@ -8,10 +8,11 @@ import javax.inject.Inject
 class ConversionInteractor @Inject constructor(
     private val conversionRepository: ConversionRateRepository
 ) {
-    enum class Period {
-        WEEK,
-        MONTH,
-        YEAR;
+    enum class Period(val days: Int) {
+        DAY(1),
+        WEEK(7),
+        MONTH(30),
+        YEAR(365);
     }
 
     suspend fun invokeFetchConversionRates(
