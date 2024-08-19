@@ -1,4 +1,4 @@
-package com.example.myportfolio.data.datasource
+package com.example.myportfolio.data.datasource.conversion_rate
 
 import com.example.myportfolio.domain.interactors.ConversionInteractor.Period
 import com.example.myportfolio.domain.models.ConversionRate
@@ -7,8 +7,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 class ConversionRateSampleSource @Inject constructor() : ConversionRateDataSource {
-
-    override fun getRates(
+    override suspend fun getRates(
         from: CurrencyCode,
         to: CurrencyCode,
         period: Period

@@ -22,7 +22,11 @@ data class UIStock(
     override val conversionRates: List<Entry>?
 ) : UIAsset(domainAsset, displayCurrency, conversionRates) {
     override fun getPriceString(context: Context) = if (conversionRates.isNullOrEmpty()) {
-        context.getString(R.string.loading_conversion_rates)
+        context.getString(
+            R.string.price,
+            domainAsset.getBasePrice(),
+            domainAsset.baseCurrency.symbol
+        )
     } else {
         context.getString(
             R.string.price,
@@ -38,7 +42,11 @@ data class UIBond(
     override val conversionRates: List<Entry>?
 ) : UIAsset(domainAsset, displayCurrency, conversionRates) {
     override fun getPriceString(context: Context) = if (conversionRates.isNullOrEmpty()) {
-        context.getString(R.string.loading_conversion_rates)
+        context.getString(
+            R.string.price,
+            domainAsset.getBasePrice(),
+            domainAsset.baseCurrency.symbol
+        )
     } else {
         context.getString(
             R.string.price,

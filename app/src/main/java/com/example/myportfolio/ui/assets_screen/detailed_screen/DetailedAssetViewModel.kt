@@ -89,15 +89,12 @@ class DetailedAssetViewModel @Inject constructor(
                 is Bond -> asset.baseCurrency.code
                 is Stock -> asset.baseCurrency.code
             }
-            val fetchedRates = withContext(Dispatchers.IO) {
+            val mappedRates = withContext(Dispatchers.Default) {
                 conversionInteractor.invokeFetchConversionRates(
                     sourceCurrency,
                     targetCurrency,
                     period
-                )
-            }
-            val mappedRates = withContext(Dispatchers.Default) {
-                fetchedRates.mapConversionRatesToEntries()
+                ).mapConversionRatesToEntries()
             }
             _conversionRates.value = mappedRates
         }

@@ -1,9 +1,9 @@
 package com.example.myportfolio.di
 
-import com.example.myportfolio.data.datasource.AssetsDataSource
-import com.example.myportfolio.data.datasource.AssetsSampleSource
-import com.example.myportfolio.data.datasource.ConversionRateDataSource
-import com.example.myportfolio.data.datasource.ConversionRateSampleSource
+import com.example.myportfolio.data.datasource.assets.AssetsDataSource
+import com.example.myportfolio.data.datasource.assets.AssetsSampleSource
+import com.example.myportfolio.data.datasource.conversion_rate.ConversionRateDataSource
+import com.example.myportfolio.data.datasource.conversion_rate.ConversionRateSampleSource
 import com.example.myportfolio.data.repository.AssetRepositoryImpl
 import com.example.myportfolio.data.repository.ConversionRateRepositoryImpl
 import com.example.myportfolio.data.repository.PreferencesDataStoreRepository

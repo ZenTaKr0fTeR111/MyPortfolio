@@ -1,6 +1,6 @@
 package com.example.myportfolio.data.repository
 
-import com.example.myportfolio.data.datasource.AssetsDataSource
+import com.example.myportfolio.data.datasource.assets.AssetsDataSource
 import com.example.myportfolio.domain.models.Asset
 import com.example.myportfolio.domain.repository.AssetRepository
 import javax.inject.Inject
