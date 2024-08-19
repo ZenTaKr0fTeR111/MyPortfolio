@@ -1,30 +1,17 @@
 package com.example.myportfolio.data.datasource.conversion_rate
 
-import com.example.myportfolio.domain.interactors.ConversionInteractor.Period
+import com.example.myportfolio.data.datasource.conversion_rate.local.ConversionRateLocalDataSource
 import com.example.myportfolio.domain.models.ConversionRate
 import com.example.myportfolio.domain.models.CurrencyCode
 import java.time.LocalDate
 import javax.inject.Inject
 
-class ConversionRateSampleSource @Inject constructor() : ConversionRateDataSource {
-    override suspend fun getRates(
-        from: CurrencyCode,
-        to: CurrencyCode,
-        period: Period
+class ConversionRateSampleSource @Inject constructor() : ConversionRateLocalDataSource {
+    override suspend fun getRatesForCurrency(
+        sourceCurrency: CurrencyCode,
+        days: Int
     ): List<ConversionRate> {
-        val days = period.days
-        return getRatesByCode(from, days).zip(getRatesByCode(to, days)) { source, target ->
-            ConversionRate(
-                source.sourceCurrency,
-                target.sourceCurrency,
-                source.rate / target.rate,
-                source.date
-            )
-        }
-    }
-
-    private fun getRatesByCode(code: CurrencyCode, days: Int): List<ConversionRate> {
-        return when (code) {
+        return when (sourceCurrency) {
             CurrencyCode.USD -> conversionRatesUSD.take(days)
             CurrencyCode.EUR -> conversionRatesEUR.take(days)
             CurrencyCode.GBP -> conversionRatesGBP.take(days)
@@ -34,6 +21,8 @@ class ConversionRateSampleSource @Inject constructor() : ConversionRateDataSourc
             }
         }
     }
+
+    override suspend fun saveRates(newRates: List<ConversionRate>) {}
 
     private val conversionRatesUSD = listOf(
         ConversionRate(

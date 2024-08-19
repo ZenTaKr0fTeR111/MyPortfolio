@@ -5,9 +5,10 @@ apply(from = "../scripts/git_hook.gradle")
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("com.google.devtools.ksp")
-    id("com.google.dagger.hilt.android")
-    id("androidx.navigation.safeargs.kotlin")
+    alias(libs.plugins.jetbrains.kotlin.serialization)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.androidx.navigation.safeargs.ktx)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -63,6 +64,14 @@ dependencies {
 
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
+
+    implementation(libs.retrofit)
+    implementation(libs.converter.kotlinx.serialization)
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
 
     implementation(libs.androidx.datastore.preferences)
 

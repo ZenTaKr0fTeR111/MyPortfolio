@@ -37,6 +37,7 @@ class AssetListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.progressBar.visibility = View.VISIBLE
         val adapter = AssetsAdapter { asset ->
             when (asset) {
                 is Currency -> findNavController().navigate(
@@ -61,6 +62,7 @@ class AssetListFragment : Fragment() {
         viewModel.initAssets(activityViewModel.defaultCurrency)
         viewModel.assets.observe(viewLifecycleOwner) {
             adapter.submitList(it)
+            binding.progressBar.visibility = View.GONE
         }
     }
 
