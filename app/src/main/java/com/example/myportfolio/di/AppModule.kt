@@ -4,9 +4,10 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.room.Room
-import com.example.myportfolio.CONVERSION_API_BASE_URL
-import com.example.myportfolio.HTTP_CACHE_SIZE_KB
-import com.example.myportfolio.TIMEOUT_SECONDS
+import com.example.myportfolio.data.CONNECTION_TIMEOUT_SECONDS
+import com.example.myportfolio.data.CONVERSION_API_BASE_URL
+import com.example.myportfolio.data.HTTP_CACHE_SIZE_KB
+import com.example.myportfolio.data.READ_TIMEOUT_SECONDS
 import com.example.myportfolio.data.db.AppDatabase
 import com.example.myportfolio.data.db.conversion_rates.ConversionRateDao
 import com.example.myportfolio.data.remote.ConversionRateApiService
@@ -22,6 +23,7 @@ import okhttp3.Cache
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
@@ -48,25 +50,44 @@ object AppModule {
     }
 
     @Provides
-    fun provideOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
-        val cache = Cache(context.cacheDir, HTTP_CACHE_SIZE_KB)
+    fun provideHttpLogger(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BASIC
+        }
+    }
+
+    @Provides
+    fun provideJsonConverterFactory(): Converter.Factory {
+        return Json.asConverterFactory("application/json".toMediaType())
+    }
+
+    @Provides
+    fun provideHttpCache(@ApplicationContext context: Context): Cache {
+        return Cache(context.cacheDir, HTTP_CACHE_SIZE_KB)
+    }
+
+    @Provides
+    fun provideOkHttpClient(
+        logger: HttpLoggingInterceptor,
+        cache: Cache
+    ): OkHttpClient {
         return OkHttpClient.Builder()
-            .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .addInterceptor(
-                HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BASIC
-                }
-            )
+            .connectTimeout(CONNECTION_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .readTimeout(READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .addInterceptor(logger)
             .cache(cache)
             .build()
     }
 
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient,
+        converterFactory: Converter.Factory
+    ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(CONVERSION_API_BASE_URL)
             .client(okHttpClient)
-            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .addConverterFactory(converterFactory)
             .build()
     }
 

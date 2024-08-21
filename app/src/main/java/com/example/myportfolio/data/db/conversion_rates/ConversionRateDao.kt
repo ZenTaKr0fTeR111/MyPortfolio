@@ -15,8 +15,21 @@ interface ConversionRateDao {
             LIMIT :days 
         """
     )
-    fun getRatesForCurrency(currencyCode: CurrencyCode, days: Int): List<ConversionRateEntity>
+    suspend fun getRatesForCurrency(
+        currencyCode: CurrencyCode,
+        days: Int
+    ): List<ConversionRateEntity>
+
+    @Query(
+        """
+            SELECT * FROM conversion_rates
+            GROUP BY date
+            ORDER BY date DESC
+            LIMIT :days
+        """
+    )
+    suspend fun getMostRecentEntries(days: Int): List<ConversionRateEntity>
 
     @Upsert
-    fun insertRates(rates: List<ConversionRateEntity>)
+    suspend fun insertRates(rates: List<ConversionRateEntity>)
 }

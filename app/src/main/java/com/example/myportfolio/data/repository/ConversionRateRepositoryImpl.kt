@@ -7,6 +7,9 @@ import com.example.myportfolio.domain.models.ConversionRate
 import com.example.myportfolio.domain.models.CurrencyCode
 import com.example.myportfolio.domain.repository.ConversionRateRepository
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 
 class ConversionRateRepositoryImpl @Inject constructor(
     private val localDataSource: ConversionRateLocalDataSource,
@@ -17,17 +20,19 @@ class ConversionRateRepositoryImpl @Inject constructor(
         targetCurrency: CurrencyCode,
         period: Period
     ): List<ConversionRate> {
-        val days = period.days
-        val sourceCurrencyRates = getRatesForCurrency(sourceCurrency, days)
-        val targetCurrencyRates = getRatesForCurrency(targetCurrency, days)
+        return withContext(Dispatchers.IO) {
+            val days = period.days
+            val sourceCurrencyRates = async { getRatesForCurrency(sourceCurrency, days) }
+            val targetCurrencyRates = async { getRatesForCurrency(targetCurrency, days) }
 
-        return sourceCurrencyRates.zip(targetCurrencyRates) { source, target ->
-            ConversionRate(
-                source.sourceCurrency,
-                target.sourceCurrency,
-                source.rate / target.rate,
-                source.date
-            )
+            sourceCurrencyRates.await().zip(targetCurrencyRates.await()) { source, target ->
+                ConversionRate(
+                    source.sourceCurrency,
+                    target.sourceCurrency,
+                    source.rate / target.rate,
+                    source.date
+                )
+            }
         }
     }
 

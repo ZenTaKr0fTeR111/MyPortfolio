@@ -8,12 +8,12 @@ enum class CurrencyCode(val id: Long) {
     BYN(0);
 
     companion object {
+        private val codeMap = entries.associateBy(CurrencyCode::id)
+
         fun getStringValues() = entries.map { it.name }
 
-        fun getById(id: Long): CurrencyCode {
-            return entries.find { it.id == id }
-                ?: throw IllegalArgumentException("Currency with id $id is not found.")
-        }
+        fun getById(id: Long) = codeMap[id]
+            ?: throw IllegalArgumentException("Currency with id $id is not found.")
     }
 }
 

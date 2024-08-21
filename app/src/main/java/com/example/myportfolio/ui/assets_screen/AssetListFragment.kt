@@ -60,9 +60,11 @@ class AssetListFragment : Fragment() {
         )
 
         viewModel.initAssets(activityViewModel.defaultCurrency)
-        viewModel.assets.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-            binding.progressBar.visibility = View.GONE
+        viewModel.assets.observe(viewLifecycleOwner) { assetList ->
+            assetList?.let {
+                adapter.submitList(assetList)
+                binding.progressBar.visibility = View.GONE
+            }
         }
     }
 

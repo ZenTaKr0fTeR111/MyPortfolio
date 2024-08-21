@@ -5,8 +5,6 @@ import com.example.myportfolio.data.db.conversion_rates.ConversionRateEntity
 import com.example.myportfolio.domain.models.ConversionRate
 import com.example.myportfolio.domain.models.CurrencyCode
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class ConversionRateDbSource @Inject constructor(
     private val conversionRateDao: ConversionRateDao
@@ -15,32 +13,25 @@ class ConversionRateDbSource @Inject constructor(
         sourceCurrency: CurrencyCode,
         days: Int
     ): List<ConversionRate> {
-        return withContext(Dispatchers.IO) {
-            if (sourceCurrency == CurrencyCode.BYN) {
-                conversionRateDao.getRatesForCurrency(CurrencyCode.USD, days)
-                    .mapToDomainRates(true)
-            } else {
-                conversionRateDao.getRatesForCurrency(sourceCurrency, days)
-                    .mapToDomainRates(false)
-            }
+        return if (sourceCurrency == CurrencyCode.BYN) {
+            conversionRateDao.getMostRecentEntries(days)
+                .mapToDomainRates(true)
+        } else {
+            conversionRateDao.getRatesForCurrency(sourceCurrency, days)
+                .mapToDomainRates(false)
         }
     }
 
     override suspend fun saveRates(newRates: List<ConversionRate>) {
-        val dbRates = withContext(Dispatchers.Default) {
-            newRates.mapToDbRates()
-        }
-        withContext(Dispatchers.IO) {
-            conversionRateDao.insertRates(dbRates)
-        }
+        conversionRateDao.insertRates(newRates.mapToDbRates())
     }
 
-    private fun List<ConversionRateEntity>.mapToDomainRates(isByn: Boolean): List<ConversionRate> {
+    private fun List<ConversionRateEntity>.mapToDomainRates(isBYN: Boolean): List<ConversionRate> {
         return this.map { conversionRateEntity ->
             ConversionRate(
-                if (isByn) CurrencyCode.BYN else conversionRateEntity.sourceCurrency,
+                if (isBYN) CurrencyCode.BYN else conversionRateEntity.sourceCurrency,
                 CurrencyCode.BYN,
-                if (isByn) 1.00 else conversionRateEntity.rate,
+                if (isBYN) 1.00 else conversionRateEntity.rate,
                 conversionRateEntity.date
             )
         }

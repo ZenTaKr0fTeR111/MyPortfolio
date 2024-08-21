@@ -63,14 +63,13 @@ dependencies {
     ksp(libs.hilt.android.compiler)
 
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
     implementation(libs.retrofit)
     implementation(libs.converter.kotlinx.serialization)
     implementation(libs.kotlinx.serialization.json)
 
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
 
     implementation(libs.androidx.datastore.preferences)
