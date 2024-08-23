@@ -12,9 +12,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import com.example.myportfolio.Formatters
 import com.example.myportfolio.R
 import com.example.myportfolio.databinding.FragmentDetailedBondItemBinding
-import com.example.myportfolio.formatBondDetails
+import com.example.myportfolio.safeFormat
 import com.example.myportfolio.ui.MainViewModel
 import com.example.myportfolio.ui.models.UIBond
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,9 +69,11 @@ class DetailedBondItemFragment : Fragment() {
                 bond.getPriceString(requireContext())
             )
             rateText.text = getString(R.string.interest_rate, bond.domainAsset.rate)
-            issueDateValue.text = bond.domainAsset.dateOfIssuance.formatBondDetails()
-            maturityDateValue.text = bond.domainAsset.dateOfIssuance
-                .plusYears(bond.domainAsset.yearsTillMaturity).formatBondDetails()
+            issueDateValue.text = bond.domainAsset.dateOfIssuance
+                .safeFormat(Formatters.BOND_DETAILS_FORMATTER)
+            maturityDateValue.text = bond.domainAsset.dateOfIssuance.plusYears(
+                bond.domainAsset.yearsTillMaturity
+            ).safeFormat(Formatters.BOND_DETAILS_FORMATTER)
         }
     }
 

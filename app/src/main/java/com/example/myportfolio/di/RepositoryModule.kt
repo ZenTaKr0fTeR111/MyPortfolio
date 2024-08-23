@@ -2,8 +2,10 @@ package com.example.myportfolio.di
 
 import com.example.myportfolio.data.datasource.assets.AssetsDataSource
 import com.example.myportfolio.data.datasource.assets.AssetsSampleSource
-import com.example.myportfolio.data.datasource.conversion_rate.ConversionRateDataSource
-import com.example.myportfolio.data.datasource.conversion_rate.ConversionRateSampleSource
+import com.example.myportfolio.data.datasource.conversion_rate.local.ConversionRateDbSource
+import com.example.myportfolio.data.datasource.conversion_rate.local.ConversionRateLocalDataSource
+import com.example.myportfolio.data.datasource.conversion_rate.remote.ConversionRateApiDataSource
+import com.example.myportfolio.data.datasource.conversion_rate.remote.ConversionRateRemoteDataSource
 import com.example.myportfolio.data.repository.AssetRepositoryImpl
 import com.example.myportfolio.data.repository.ConversionRateRepositoryImpl
 import com.example.myportfolio.data.repository.PreferencesDataStoreRepository
@@ -28,9 +30,15 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindConversionRateDataSource(
-        dataSource: ConversionRateSampleSource
-    ): ConversionRateDataSource
+    abstract fun bindConversionRateLocalDataSource(
+        dataSource: ConversionRateDbSource
+    ): ConversionRateLocalDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindConversionRateRemoteDataSource(
+        dataSource: ConversionRateApiDataSource
+    ): ConversionRateRemoteDataSource
 
     @Binds
     @Singleton
