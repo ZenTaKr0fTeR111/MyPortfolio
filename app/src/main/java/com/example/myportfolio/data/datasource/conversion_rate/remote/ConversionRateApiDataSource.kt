@@ -25,14 +25,22 @@ class ConversionRateApiDataSource @Inject constructor(
         ).mapToDomainRates()
     }
 
+    override suspend fun retrieveDailyRates(): List<ConversionRate> {
+        return apiService.getDailyRates().mapToDomainRates()
+    }
+
     private fun List<SerializableConversionRate>.mapToDomainRates(): List<ConversionRate> {
-        return this.map { serializableConversionRate ->
-            ConversionRate(
-                CurrencyCode.getById(serializableConversionRate.id),
-                CurrencyCode.BYN,
-                serializableConversionRate.rate,
-                serializableConversionRate.date.parseApiDate()
-            )
+        return this.mapNotNull { serializableConversionRate ->
+            try {
+                ConversionRate(
+                    CurrencyCode.getById(serializableConversionRate.id),
+                    CurrencyCode.BYN,
+                    serializableConversionRate.rate,
+                    serializableConversionRate.date.parseApiDate()
+                )
+            } catch (e: IllegalArgumentException) {
+                null
+            }
         }
     }
 }

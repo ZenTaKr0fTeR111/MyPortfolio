@@ -14,6 +14,7 @@ import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
+import java.util.Calendar
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -32,6 +33,16 @@ fun LocalDate.safeFormat(formatter: DateTimeFormatter): String {
         e.printStackTrace()
         return this.toString()
     }
+}
+
+fun getMillisTillMidnight(): Long {
+    val midnight = Calendar.getInstance().apply {
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        add(Calendar.DAY_OF_MONTH, 1)
+    }
+    return midnight.timeInMillis - Calendar.getInstance().timeInMillis
 }
 
 fun String.parseApiDate(): LocalDate {

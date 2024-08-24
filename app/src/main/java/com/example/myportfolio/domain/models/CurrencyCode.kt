@@ -12,6 +12,9 @@ enum class CurrencyCode(val id: Long) {
 
         fun getStringValues() = entries.map { it.name }
 
+        /**
+         *  @throws IllegalArgumentException if currency with id [id] is not defined
+         */
         fun getById(id: Long) = codeMap[id]
             ?: throw IllegalArgumentException("Currency with id $id is not found.")
     }

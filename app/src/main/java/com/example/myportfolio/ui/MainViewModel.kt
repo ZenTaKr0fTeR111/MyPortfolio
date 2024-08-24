@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myportfolio.domain.interactors.ConversionInteractor
 import com.example.myportfolio.domain.interactors.SettingsInteractor
 import com.example.myportfolio.domain.models.Currency
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +13,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val settingsInteractor: SettingsInteractor
+    private val settingsInteractor: SettingsInteractor,
+    private val conversionInteractor: ConversionInteractor
 ) : ViewModel() {
     private val _defaultCurrency = MutableLiveData<Currency>()
     val defaultCurrency: LiveData<Currency>
@@ -25,6 +27,7 @@ class MainViewModel @Inject constructor(
     init {
         fetchDefaultCurrency()
         fetchDarkMode()
+        scheduleDailyRatesRetrieval()
     }
 
     fun saveDefaultCurrency(currency: Currency) {
@@ -36,6 +39,12 @@ class MainViewModel @Inject constructor(
     fun toggleDarkMode() {
         viewModelScope.launch {
             settingsInteractor.invokeToggleNightMode(!isDarkMode.value!!)
+        }
+    }
+
+    private fun scheduleDailyRatesRetrieval() {
+        viewModelScope.launch {
+            conversionInteractor.invokeScheduleDailyRatesFetching()
         }
     }
 

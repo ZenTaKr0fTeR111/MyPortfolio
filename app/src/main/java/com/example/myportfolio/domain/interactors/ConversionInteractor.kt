@@ -22,4 +22,7 @@ class ConversionInteractor @Inject constructor(
     ): List<ConversionRate> {
         return conversionRepository.getConversionRate(sourceCurrency, targetCurrency, period)
     }
+
+    suspend fun invokeScheduleDailyRatesFetching() =
+        conversionRepository.scheduleDailyRatesFetching()
 }
