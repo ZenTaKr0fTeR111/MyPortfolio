@@ -15,6 +15,6 @@ interface ConversionRateApiService {
         @Query("enddate") endDate: String
     ): List<SerializableConversionRate>
 
-    @GET("exrates/rates/periodicity=0")
+    @GET("exrates/rates?periodicity=0")
     suspend fun getDailyRates(): List<SerializableConversionRate>
 }

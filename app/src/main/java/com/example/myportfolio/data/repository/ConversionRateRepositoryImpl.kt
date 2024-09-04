@@ -1,7 +1,11 @@
 package com.example.myportfolio.data.repository
 
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.WorkManager
+import com.example.myportfolio.data.DAILY_RATES_WORK_NAME
 import com.example.myportfolio.data.datasource.conversion_rate.local.ConversionRateLocalDataSource
 import com.example.myportfolio.data.datasource.conversion_rate.remote.ConversionRateRemoteDataSource
+import com.example.myportfolio.data.work_manager.WorkRequests
 import com.example.myportfolio.domain.interactors.ConversionInteractor.Period
 import com.example.myportfolio.domain.models.ConversionRate
 import com.example.myportfolio.domain.models.CurrencyCode
@@ -13,7 +17,8 @@ import kotlinx.coroutines.withContext
 
 class ConversionRateRepositoryImpl @Inject constructor(
     private val localDataSource: ConversionRateLocalDataSource,
-    private val remoteDataSource: ConversionRateRemoteDataSource
+    private val remoteDataSource: ConversionRateRemoteDataSource,
+    private val workManager: WorkManager
 ) : ConversionRateRepository {
     override suspend fun getConversionRate(
         sourceCurrency: CurrencyCode,
@@ -34,6 +39,21 @@ class ConversionRateRepositoryImpl @Inject constructor(
                 )
             }
         }
+    }
+
+    override suspend fun syncDailyRates() {
+        withContext(Dispatchers.IO) {
+            val dailyRates = remoteDataSource.retrieveDailyRates()
+            localDataSource.saveRates(dailyRates)
+        }
+    }
+
+    override suspend fun scheduleDailyRatesFetching() {
+        workManager.enqueueUniquePeriodicWork(
+            DAILY_RATES_WORK_NAME,
+            ExistingPeriodicWorkPolicy.KEEP,
+            WorkRequests.getDailyWorkRequest()
+        )
     }
 
     private suspend fun getRatesForCurrency(

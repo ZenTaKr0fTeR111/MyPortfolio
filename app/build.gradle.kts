@@ -60,7 +60,9 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
 
     implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.work)
     ksp(libs.hilt.android.compiler)
+    ksp(libs.androidx.hilt.compiler)
 
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
@@ -75,4 +77,6 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
 
     implementation(libs.mpandroidchart)
+
+    implementation(libs.androidx.work.runtime.ktx)
 }

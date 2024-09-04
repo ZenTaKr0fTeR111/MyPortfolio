@@ -10,4 +10,8 @@ interface ConversionRateRepository {
         targetCurrency: CurrencyCode,
         period: Period
     ): List<ConversionRate>
+
+    suspend fun scheduleDailyRatesFetching()
+
+    suspend fun syncDailyRates()
 }

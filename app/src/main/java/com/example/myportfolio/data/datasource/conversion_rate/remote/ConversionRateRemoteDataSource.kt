@@ -8,4 +8,6 @@ interface ConversionRateRemoteDataSource {
         sourceCurrency: CurrencyCode,
         days: Int
     ): List<ConversionRate>
+
+    suspend fun retrieveDailyRates(): List<ConversionRate>
 }
