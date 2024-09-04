@@ -13,5 +13,5 @@ interface ConversionRateRepository {
 
     suspend fun scheduleDailyRatesFetching()
 
-    suspend fun loadDailyRates()
+    suspend fun syncDailyRates()
 }

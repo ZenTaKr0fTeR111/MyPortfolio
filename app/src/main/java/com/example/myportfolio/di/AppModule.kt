@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.room.Room
+import androidx.work.WorkManager
 import com.example.myportfolio.data.db.AppDatabase
 import com.example.myportfolio.data.db.conversion_rates.ConversionRateDao
 import com.example.myportfolio.dataStore
@@ -33,5 +34,10 @@ object AppModule {
     @Provides
     fun provideConversionRateDao(database: AppDatabase): ConversionRateDao {
         return database.conversionRateDao()
+    }
+
+    @Provides
+    fun provideWorkManager(@ApplicationContext context: Context): WorkManager {
+        return WorkManager.getInstance(context)
     }
 }

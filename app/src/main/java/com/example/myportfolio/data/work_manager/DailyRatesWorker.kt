@@ -1,4 +1,4 @@
-package com.example.myportfolio.data.remote
+package com.example.myportfolio.data.work_manager
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
@@ -15,7 +15,7 @@ class DailyRatesWorker @AssistedInject constructor(
     private val conversionRateRepository: ConversionRateRepository
 ) : CoroutineWorker(context, workerParameters) {
     override suspend fun doWork(): Result {
-        conversionRateRepository.loadDailyRates()
+        conversionRateRepository.syncDailyRates()
         return Result.success()
     }
 }
