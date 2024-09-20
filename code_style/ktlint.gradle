@@ -2,7 +2,7 @@ ext {
     // Do not change the version. In newer versions there is a code-formatter conflict
     // between ktlint and Android Studio formatter - continuation indent 4 vs 8.
     // It can't be changed from .editorconfig
-    ktlint_version = '0.35.0'
+    ktlint_version = '0.38.0'
 }
 
 configurations {

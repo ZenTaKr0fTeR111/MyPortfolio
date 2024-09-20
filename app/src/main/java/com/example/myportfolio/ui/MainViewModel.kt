@@ -39,9 +39,9 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun toggleDarkMode() {
+    fun toggleDarkMode(toggled: Boolean) {
         viewModelScope.launch {
-            settingsInteractor.invokeToggleNightMode(!isDarkMode.value!!)
+            settingsInteractor.invokeToggleNightMode(toggled)
         }
     }
 

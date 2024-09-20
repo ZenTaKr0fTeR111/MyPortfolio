@@ -7,11 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myportfolio.domain.interactors.AssetInteractor
 import com.example.myportfolio.domain.interactors.ConversionInteractor
-import com.example.myportfolio.domain.interactors.ConversionInteractor.Period
 import com.example.myportfolio.domain.models.Asset
 import com.example.myportfolio.domain.models.Bond
 import com.example.myportfolio.domain.models.Currency
 import com.example.myportfolio.domain.models.Stock
+import com.example.myportfolio.domain.models.TimePeriod
 import com.example.myportfolio.mapConversionRatesToEntries
 import com.example.myportfolio.ui.models.UIAsset
 import com.example.myportfolio.ui.models.UIBond
@@ -67,7 +67,7 @@ class AssetListViewModel @Inject constructor(
                         val conversionRate = conversionInteractor.invokeFetchConversionRates(
                             asset.baseCurrency.code,
                             appCurrency.code,
-                            Period.DAY
+                            TimePeriod.DAY
                         )
                         UIStock(asset, appCurrency, conversionRate.mapConversionRatesToEntries())
                     }
@@ -75,7 +75,7 @@ class AssetListViewModel @Inject constructor(
                         val conversionRate = conversionInteractor.invokeFetchConversionRates(
                             asset.baseCurrency.code,
                             appCurrency.code,
-                            Period.DAY
+                            TimePeriod.DAY
                         )
                         UIBond(asset, appCurrency, conversionRate.mapConversionRatesToEntries())
                     }
@@ -83,7 +83,7 @@ class AssetListViewModel @Inject constructor(
                         val conversionRate = conversionInteractor.invokeFetchConversionRates(
                             asset.code,
                             appCurrency.code,
-                            Period.DAY
+                            TimePeriod.DAY
                         )
                         UICurrency(asset, appCurrency, conversionRate.mapConversionRatesToEntries())
                     }

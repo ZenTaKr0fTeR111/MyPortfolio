@@ -7,12 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myportfolio.domain.interactors.AssetInteractor
 import com.example.myportfolio.domain.interactors.ConversionInteractor
-import com.example.myportfolio.domain.interactors.ConversionInteractor.Period
 import com.example.myportfolio.domain.models.Asset
 import com.example.myportfolio.domain.models.Bond
 import com.example.myportfolio.domain.models.Currency
 import com.example.myportfolio.domain.models.CurrencyCode
 import com.example.myportfolio.domain.models.Stock
+import com.example.myportfolio.domain.models.TimePeriod
+import com.example.myportfolio.domain.models.currencies
 import com.example.myportfolio.mapConversionRatesToEntries
 import com.example.myportfolio.ui.models.UIAsset
 import com.example.myportfolio.ui.models.UIBond
@@ -32,19 +33,23 @@ class DetailedAssetViewModel @Inject constructor(
 ) : ViewModel() {
     private val _asset = MutableLiveData<Asset>()
     private val _conversionRates = MutableLiveData<List<Entry>>()
-    private var defaultCurrency = CurrencyCode.USD
-    private var _period = Period.WEEK
-    val period: Period
+    private var _convertToCurrency = MutableLiveData<Currency>()
+    private var _period = TimePeriod.WEEK
+    val period: TimePeriod
         get() = _period
 
     val asset = MediatorLiveData<UIAsset>()
 
     fun fetchAsset(assetID: Int, appCurrency: LiveData<Currency>) {
         viewModelScope.launch {
-            _asset.value = interactor.invokeFetchAssetById(assetID)
-            appCurrency.value?.let { defaultCurrency = it.code }
-            fetchConversionRates(defaultCurrency)
-            initAsset(appCurrency)
+            if (_asset.value == null) {
+                _asset.value = interactor.invokeFetchAssetById(assetID)
+            }
+            if (_convertToCurrency.value == null) {
+                _convertToCurrency.value = appCurrency.value
+                fetchConversionRates()
+                initAsset(_convertToCurrency)
+            }
         }
     }
 
@@ -76,13 +81,17 @@ class DetailedAssetViewModel @Inject constructor(
         }
     }
 
-    fun changePeriod(newPeriod: Period) {
+    fun changePeriod(newPeriod: TimePeriod) {
         _period = newPeriod
-        fetchConversionRates(defaultCurrency)
+        fetchConversionRates()
     }
 
-    fun fetchConversionRates(targetCurrency: CurrencyCode) {
-        defaultCurrency = targetCurrency
+    fun changeConvertToCurrency(newCurrencyCode: CurrencyCode) {
+        _convertToCurrency.value = currencies[newCurrencyCode]
+        fetchConversionRates()
+    }
+
+    private fun fetchConversionRates() {
         viewModelScope.launch {
             val sourceCurrency = when (val asset = _asset.value!!) {
                 is Currency -> asset.code
@@ -92,7 +101,7 @@ class DetailedAssetViewModel @Inject constructor(
             val mappedRates = withContext(Dispatchers.Default) {
                 conversionInteractor.invokeFetchConversionRates(
                     sourceCurrency,
-                    targetCurrency,
+                    _convertToCurrency.value?.code ?: CurrencyCode.USD,
                     period
                 ).mapConversionRatesToEntries()
             }

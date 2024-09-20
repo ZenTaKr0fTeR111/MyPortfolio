@@ -65,9 +65,9 @@ fun LineChart.configureChart(context: Context) {
     xAxis.position = XAxis.XAxisPosition.BOTTOM
     legend.isEnabled = false
     description = null
-    xAxis.textColor = context.getColor(R.color.app_text)
-    axisLeft.textColor = context.getColor(R.color.app_text)
-    axisRight.textColor = context.getColor(R.color.app_text)
+    xAxis.textColor = context.getColor(R.color.chart)
+    axisLeft.textColor = context.getColor(R.color.chart)
+    axisRight.textColor = context.getColor(R.color.chart)
 }
 
 object ChartDateFormatter : ValueFormatter() {
