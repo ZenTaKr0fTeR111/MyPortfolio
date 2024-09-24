@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="settings_padding">16dp</dimen>
+    <dimen name="tiny_padding">8dp</dimen>
+    <dimen name="small_padding">16dp</dimen>
+    <dimen name="average_padding">20dp</dimen>
+
+    <dimen name="app_bar_height">35dp</dimen>
+
     <dimen name="settings_text_size">20sp</dimen>
+    <dimen name="top_bar_text_size">20sp</dimen>
+
+    <dimen name="small_text_size">16sp</dimen>
+    <dimen name="average_text_size">20sp</dimen>
+    <dimen name="above_average_text_size">24sp</dimen>
+    <dimen name="big_text_size">28sp</dimen>
 </resources>

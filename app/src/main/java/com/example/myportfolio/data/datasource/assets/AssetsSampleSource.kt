@@ -19,7 +19,8 @@ class AssetsSampleSource @Inject constructor() : AssetsDataSource {
 
     val assetsStorage = mutableListOf(
         Stock(
-            0, "Apple Inc.",
+            0,
+            "Apple Inc.",
             23292,
             currencies.getValue(CurrencyCode.USD),
             "AAPL"
